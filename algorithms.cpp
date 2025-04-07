@@ -1,4 +1,5 @@
 #include "algorithms.hpp"
+#include "data_strct.hpp"
 #include <limits>
 using namespace std;
 list<int> algorithms::bfs(list<vertex> &vertices) {
@@ -128,8 +129,8 @@ list<edge> algorithms::prim(Graph &g) {
 	}
 	for (int i = 0; i < max_vertices; i++) {
 		edge mst_edge;
-		mst_edge.src = parent[v];
-		mst_edge.dest = v;
+		mst_edge.src = parent[i];
+		mst_edge.dest = i;
 
 		for (int j = 0; j < g.getEdges().size; j++) {
 			edge e = g.getEdges().get(j);
@@ -141,9 +142,66 @@ list<edge> algorithms::prim(Graph &g) {
 		}
 		mst_edges.push(mst_edge);
 	}
-	delete[] in_mst;
-	delete[] min;
-	delete[] parent;
+	delete [] in_mst;
+	delete [] min;
+	delete [] parent;
 
+	return mst_edges;
+}
+int algorithms::findSet(int vertex, int *parent) {
+	if (parent[vertex] != vertex) {
+		parent[vertex] = findSet(parent[vertex], parent);
+	}
+	return parent[vertex];
+}
+void algorithms::unionSets(int u, int v, int *parent, int *rank) {
+	int root_u = findSet(u, parent);
+	int root_v = findSet(v, parent);
+
+	if (rank[root_u] > rank[root_v]) {
+		parent[root_v] = root_u;
+	}
+	else if (rank[root_u] < rank[root_v]) {
+		parent[root_u] = root_v;
+	}
+	else {
+		parent[root_v] = root_u;
+		rank[root_u]++;
+	}
+}
+list<edge> algorithms::kruskal(Graph &g) {
+	int max_vertices = g.getVertices().size;
+	list<edge> mst_edges;
+	list<edge> sorted = *new list<edge>(g.getEdges().size);
+
+	for (int i = 0; i < g.getEdges().size - 1; i++) {
+		for (int j = 0; j < g.getEdges().size - i - 1; j++) {
+			edge e1 = g.getEdges().get(j);
+			edge e2 = g.getEdges().get(j + 1);
+			if(e1.weight > e2.weight) {
+				sorted.set(j, e2);
+				sorted.set(j+1, e1);
+			}
+		}
+	}
+
+	int* parent = new int[max_vertices];
+	int* rank = new int[max_vertices];
+	for (int i = 0; i < max_vertices; i++) {
+		parent[i] = i;
+		rank[i] = 0;
+	}
+	for (int i = 0; i < g.getEdges().size; i++) {
+		edge e = sorted.get(i);
+		int set_u = findSet(e.src, parent);
+		int set_v = findSet(e.dest, parent);
+		if (set_u != set_v) {
+			mst_edges.push(e);
+			unionSets(set_u, set_v, parent, rank);
+		}
+	}
+
+	delete [] parent;
+	delete [] rank;
 	return mst_edges;
 }

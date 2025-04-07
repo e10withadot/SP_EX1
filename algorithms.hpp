@@ -8,4 +8,7 @@ namespace algorithms {
 	list<int> dfs(list<vertex> &vertices);
 	list<int> dijkstra(Graph &g, int src);
 	list<edge> prim(Graph &g);
+	int findSet(int vertex, int* parent);
+	void unionSets(int u, int v, int* parent, int* rank);
+	list<edge> kruskal(Graph &g);
 }
