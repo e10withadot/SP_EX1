@@ -1,5 +1,6 @@
 #include "data_strct.hpp"
 using namespace data;
+#include <iostream>
 namespace graph {
 	struct edge {
 		int src;
@@ -51,9 +52,21 @@ namespace graph {
 				v.neighbors.remove(i);
 				this->vertices.set(src, v);
 				i = 0;
-				while(this->vertices[dest].neighbors[i] != src)
+				while(this->vertices.get(dest).neighbors.get(i).integer != src)
 					i++;
-				this->vertices[dest].neighbors[i] = -1;
+				v = this->vertices.get(dest);
+				v.neighbors.remove(i);
+				this->vertices.set(dest, v);
+			}
+			void print_graph() {
+				for (int i = 0; i < this->vertices.size; i++) {
+					list<Integer> neighbors = this->vertices.get(i).neighbors;
+					std::cout << "Vertex " << i << " neighbors: ";
+					for (int j = 0; j < neighbors.size; j++) {
+						std::cout << neighbors.get(j).integer << ", ";
+					}
+					std::cout << "\n";
+				}
 			}
 	};
 };
