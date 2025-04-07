@@ -1,3 +1,4 @@
+// ey.gellis@gmail.com
 #include <iostream>
 #include "algorithms.hpp"
 #include "data_strct.hpp"

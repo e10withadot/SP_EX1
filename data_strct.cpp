@@ -1,3 +1,4 @@
+// ey.gellis@gmail.com
 #include <stdexcept>
 #include "data_strct.hpp"
 using namespace data;

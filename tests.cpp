@@ -1,3 +1,4 @@
+// ey.gellis@gmail.com
 #define DOCTEST_CONFIG
 #include "doctest.h"
 #include "algorithms.hpp"

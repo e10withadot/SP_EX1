@@ -1,3 +1,4 @@
+// ey.gellis@gmail.com
 #ifndef DATA_STRCT_HPP
 #define DATA_STRCT_HPP
 namespace data {
