@@ -1,17 +1,16 @@
 #include "algorithms.hpp"
 #include <iostream>
 #include <limits>
-#include <stdexcept>
 using namespace std;
 list<int> algorithms::bfs(list<vertex> &vertices) {
 	int s = 0;
 	list<int> res;
 	list<int> queue;
-	list<bool> visited = *new list<bool>(vertices.size);
+	list<bool> colored = *new list<bool>(vertices.size);
 	for (int i = 0; i < vertices.size; i++) {
-		visited.set(i, false);
+		colored.set(i, false);
 	}
-	visited.set(s, true);
+	colored.set(s, true);
 	queue.set(0, s);
 	
 	while(!queue.empty()) {
@@ -20,39 +19,39 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 		res.push(current);
 		for (int i = 0; i < neighbors.size; i++) {
 			int x = neighbors.get(i);
-			if(!visited.get(x)) {
-				visited.set(x, true);
+			if(!colored.get(x)) {
+				colored.set(x, true);
 				queue.push(x);
 			}
 		}
 	}
 	return res;
 }
-void algorithms::dfsRec(list<vertex> &vertices, list<bool> &visited, int s, list<int> &res) {
-	visited.set(s, true);
+void algorithms::dfsRec(list<vertex> &vertices, list<bool> &colored, int s, list<int> &res) {
+	colored.set(s, true);
 	res.push(s);
 	for(int i = 0; i < vertices.size; i++) {
-		if (!visited.get(i))
-			dfsRec(vertices, visited, i, res);
+		if (!colored.get(i))
+			dfsRec(vertices, colored, i, res);
 	}
 }
 list<int> algorithms::dfs(list<vertex> &vertices) {
-	list<bool> visited = *new list<bool>(vertices.size);
+	list<bool> colored = *new list<bool>(vertices.size);
 	for (int i = 0; i < vertices.size; i++) {
-		visited.set(i, false);
+		colored.set(i, false);
 	}
 	list<int> res;
-	dfsRec(vertices, visited, 0, res);
+	dfsRec(vertices, colored, 0, res);
 	return res;
 }
-void algorithms::dijkstra(Graph &g, int src) {
+list<int> algorithms::dijkstra(Graph &g, int src) {
 	int max_vertices = g.getVertices().size;
 	list<int> distances(max_vertices);
-	list<bool> visited(max_vertices);
+	list<bool> colored(max_vertices);
 
 	for (int i = 0; i < max_vertices; i++) {
 		distances.set(i, numeric_limits<int>::max());
-		visited.set(i, false);
+		colored.set(i, false);
 	}
 	distances.set(src, 0);
 
@@ -61,7 +60,7 @@ void algorithms::dijkstra(Graph &g, int src) {
 		int index = -1;
 
 		for (int j = 0; j <max_vertices; j++){
-			if (!visited.get(j) && distances.get(j) <= min) {
+			if (!colored.get(j) && distances.get(j) <= min) {
 				min = distances.get(j);
 				index = j;
 			}
@@ -69,7 +68,7 @@ void algorithms::dijkstra(Graph &g, int src) {
 		int u = index;
 		if (u == -1) break;
 
-		visited.set(u, true);
+		colored.set(u, true);
 
 		vertex current = g.getVertices().get(u);
 		for (int i = 0; i < current.neighbors.size; i++) {
@@ -83,14 +82,12 @@ void algorithms::dijkstra(Graph &g, int src) {
 				}
 			}
 
-			if (!visited.get(neighbor) && distances.get(u) != numeric_limits<int>::max() &&
+			if (!colored.get(neighbor) && distances.get(u) != numeric_limits<int>::max() &&
 				distances.get(u) + weight < distances.get(neighbor)) {
 				distances.set(neighbor, distances.get(u) + weight);
 			}
 		}
 	}
 
-	for (int i = 0; i < max_vertices; i++) {
-		std::cout << "Vertex " << i << " distance: " << distances.get(i) << "\n";
-	}
+	return distances;
 }
