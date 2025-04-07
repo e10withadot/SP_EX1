@@ -7,7 +7,7 @@ namespace graph {
 		int weight;
 	};
 	struct vertex {
-		list<Integer> neighbors;
+		list<int> neighbors;
 	};
 	class graph {
 		private:
@@ -15,7 +15,10 @@ namespace graph {
 			list<edge> edges;
 			list<vertex> vertices;
 		public:
-			graph(int max_vertices); 
+			graph(int max_vertices) : max_vertices(max_vertices), edges(*new list<edge>(6)), vertices(*new list<vertex>(max_vertices)) {}; 
+			/*
+			* Adds an edge to the graph.
+			*/
 			void addEdge(int src, int dest, int weight = 1);
 			void removeEdge(int src, int dest);
 			void print_graph();
