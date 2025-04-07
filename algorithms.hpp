@@ -6,4 +6,5 @@ namespace algorithms {
 	list<int> bfs(list<vertex> &vertices);
 	void dfsRec(list<vertex> &vertices, list<bool> &visited, int s, list<int> &res);
 	list<int> dfs(list<vertex> &vertices);
+	void dijkstra(Graph &g, int src);
 }

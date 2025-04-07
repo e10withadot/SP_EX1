@@ -9,13 +9,15 @@ namespace graph {
 	struct vertex {
 		list<int> neighbors;
 	};
-	class graph {
+	class Graph {
 		private:
 			int max_vertices;
 			list<edge> edges;
 			list<vertex> vertices;
 		public:
-			graph(int max_vertices) : max_vertices(max_vertices), edges(*new list<edge>(6)), vertices(*new list<vertex>(max_vertices)) {}; 
+			Graph(int max_vertices) : max_vertices(max_vertices), edges(*new list<edge>(6)), vertices(*new list<vertex>(max_vertices)) {}; 
+			list<vertex> getVertices();
+			list<edge> getEdges();
 			/*
 			* Adds an edge to the graph.
 			*/

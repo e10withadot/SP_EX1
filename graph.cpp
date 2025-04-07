@@ -1,9 +1,16 @@
 #include "graph.hpp"
-#include "data_strct.hpp"
-using namespace data;
+using namespace graph;
 #include <iostream>
 
-void graph::graph::addEdge(int src, int dest, int weight) {
+list<vertex> Graph::getVertices() {
+	return this->vertices;
+}
+
+list<edge> Graph::getEdges() {
+	return this->edges;
+}
+
+void Graph::addEdge(int src, int dest, int weight) {
 	edge e = *new edge();
 	e.src = src;
 	e.dest = dest;
@@ -16,7 +23,7 @@ void graph::graph::addEdge(int src, int dest, int weight) {
 	vd.neighbors.push(src);
 	this->vertices.set(dest, vd);
 }
-void graph::graph::removeEdge(int src, int dest) {
+void Graph::removeEdge(int src, int dest) {
 	int i = 0;
 	while(this->edges.get(i).src != src || this->edges.get(i).dest != dest)
 		i++;
@@ -34,7 +41,7 @@ void graph::graph::removeEdge(int src, int dest) {
 	v.neighbors.remove(i);
 	this->vertices.set(dest, v);
 }
-void graph::graph::print_graph() {
+void Graph::print_graph() {
 	for (int i = 0; i < this->vertices.size; i++) {
 		list<int> neighbors = this->vertices.get(i).neighbors;
 		std::cout << "Vertex " << i << " neighbors: ";
