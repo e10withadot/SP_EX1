@@ -1,5 +1,4 @@
 #include "algorithms.hpp"
-#include <iostream>
 #include <limits>
 using namespace std;
 list<int> algorithms::bfs(list<vertex> &vertices) {
@@ -90,4 +89,61 @@ list<int> algorithms::dijkstra(Graph &g, int src) {
 	}
 
 	return distances;
+}
+list<edge> algorithms::prim(Graph &g) {
+	int max_vertices = g.getVertices().size;
+	list<edge> mst_edges;
+	bool* in_mst = new bool[max_vertices];
+	int* min = new int[max_vertices];
+	int* parent = new int[max_vertices];
+	for (int i = 0; i < max_vertices; i++) {
+		in_mst[i] = false;
+		min[i] = numeric_limits<int>::max();
+		parent[i] = -1;
+	}
+	min[0] = 0;
+	for (int i = 0; i < max_vertices - 1; i++) {
+		int u = -1;
+		int mval = numeric_limits<int>::max();
+		for (int j = 0; j < max_vertices; j++) {
+			if (!in_mst[j] && min[j] < mval) {
+				mval = min[j];
+				u = j;
+			}
+		}
+		in_mst[u] = true;
+		list<int> neighbors = g.getVertices().get(u).neighbors;
+		for (int j = 0; j < neighbors.size; j++) {
+			int v = neighbors.get(j);
+			for(int k = 0; k < g.getEdges().size; k++) {
+				edge e = g.getEdges().get(j);
+				if ((e.src == u && e.dest == v) || (e.src == v && e.dest == u)) {
+					if (!in_mst[v] && e.weight < min[v]) {
+						min[v] = e.weight;
+						parent[v] = u;
+					}
+				}
+			}
+		}
+	}
+	for (int i = 0; i < max_vertices; i++) {
+		edge mst_edge;
+		mst_edge.src = parent[v];
+		mst_edge.dest = v;
+
+		for (int j = 0; j < g.getEdges().size; j++) {
+			edge e = g.getEdges().get(j);
+			if ((e.src == mst_edge.src && e.dest == mst_edge.dest) ||
+				(e.src == mst_edge.dest && e.dest == mst_edge.src)) {
+				mst_edge.weight = e.weight;
+				break;
+			}
+		}
+		mst_edges.push(mst_edge);
+	}
+	delete[] in_mst;
+	delete[] min;
+	delete[] parent;
+
+	return mst_edges;
 }
