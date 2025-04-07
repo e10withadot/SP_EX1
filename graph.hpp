@@ -20,6 +20,9 @@ namespace graph {
 			* Adds an edge to the graph.
 			*/
 			void addEdge(int src, int dest, int weight = 1);
+			/*
+			* Removes an edge from the graph.
+			*/
 			void removeEdge(int src, int dest);
 			void print_graph();
 	};
