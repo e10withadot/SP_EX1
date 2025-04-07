@@ -1,7 +1,6 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#define DOCTEST_CONFIG
 #include "doctest.h"
 #include "algorithms.hpp"
-#include "graph.hpp"
 using namespace graph;
 #include "data_strct.hpp"
 
