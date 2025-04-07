@@ -1,3 +1,5 @@
+#ifndef GRAPH_HPP
+#define GRAPH_HPP
 #include "data_strct.hpp"
 using namespace data;
 namespace graph {
@@ -29,3 +31,4 @@ namespace graph {
 			void print_graph();
 	};
 }
+#endif

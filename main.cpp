@@ -22,10 +22,8 @@ void printMST(list<edge>& mst) {
 }
 
 int main() {
-    // Create a graph with 6 vertices
     Graph g(6);
-    
-    // Add edges to create a sample graph
+
     g.addEdge(0, 1, 4);
     g.addEdge(0, 2, 3);
     g.addEdge(1, 2, 1);
