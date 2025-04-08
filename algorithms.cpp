@@ -7,8 +7,8 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 	int s = 0;
 	list<int> res;
 	list<int> queue;
-	list<bool> colored = *new list<bool>(vertices.size);
-	for (int i = 0; i < vertices.size; i++) {
+	list<bool> colored = *new list<bool>(vertices.getSize());
+	for (int i = 0; i < vertices.getSize(); i++) {
 		colored.set(i, false);
 	}
 	colored.set(s, true);
@@ -18,7 +18,7 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 		int current = queue.pop();
 		list<int> neighbors = vertices.get(current).neighbors;
 		res.push(current);
-		for (int i = 0; i < neighbors.size; i++) {
+		for (int i = 0; i < neighbors.getSize(); i++) {
 			int x = neighbors.get(i);
 			if(!colored.get(x)) {
 				colored.set(x, true);
@@ -31,14 +31,14 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 void algorithms::dfsRec(list<vertex> &vertices, list<bool> &colored, int s, list<int> &res) {
 	colored.set(s, true);
 	res.push(s);
-	for(int i = 0; i < vertices.size; i++) {
+	for(int i = 0; i < vertices.getSize(); i++) {
 		if (!colored.get(i))
 			dfsRec(vertices, colored, i, res);
 	}
 }
 list<int> algorithms::dfs(list<vertex> &vertices) {
-	list<bool> colored = *new list<bool>(vertices.size);
-	for (int i = 0; i < vertices.size; i++) {
+	list<bool> colored = *new list<bool>(vertices.getSize());
+	for (int i = 0; i < vertices.getSize(); i++) {
 		colored.set(i, false);
 	}
 	list<int> res;
@@ -46,7 +46,7 @@ list<int> algorithms::dfs(list<vertex> &vertices) {
 	return res;
 }
 list<int> algorithms::dijkstra(Graph &g, int src) {
-	int max_vertices = g.getVertices().size;
+	int max_vertices = g.getVertices().getSize();
 	list<int> distances(max_vertices);
 	list<bool> colored(max_vertices);
 
@@ -72,10 +72,10 @@ list<int> algorithms::dijkstra(Graph &g, int src) {
 		colored.set(u, true);
 
 		vertex current = g.getVertices().get(u);
-		for (int i = 0; i < current.neighbors.size; i++) {
+		for (int i = 0; i < current.neighbors.getSize(); i++) {
 			int neighbor = current.neighbors.get(i);
 			int weight = numeric_limits<int>::max();
-			for (int j = 0; j < g.getEdges().size; j++) {
+			for (int j = 0; j < g.getEdges().getSize(); j++) {
 				edge e = g.getEdges().get(j);
 				if ((e.src == u && e.dest == neighbor) || (e.src == neighbor && e.dest == u)) {
 					weight = e.weight;
@@ -93,7 +93,7 @@ list<int> algorithms::dijkstra(Graph &g, int src) {
 	return distances;
 }
 list<edge> algorithms::prim(Graph &g) {
-	int max_vertices = g.getVertices().size;
+	int max_vertices = g.getVertices().getSize();
 	list<edge> mst_edges;
 	bool* in_mst = new bool[max_vertices];
 	int* min = new int[max_vertices];
@@ -115,9 +115,9 @@ list<edge> algorithms::prim(Graph &g) {
 		}
 		in_mst[u] = true;
 		list<int> neighbors = g.getVertices().get(u).neighbors;
-		for (int j = 0; j < neighbors.size; j++) {
+		for (int j = 0; j < neighbors.getSize(); j++) {
 			int v = neighbors.get(j);
-			for(int k = 0; k < g.getEdges().size; k++) {
+			for(int k = 0; k < g.getEdges().getSize(); k++) {
 				edge e = g.getEdges().get(j);
 				if ((e.src == u && e.dest == v) || (e.src == v && e.dest == u)) {
 					if (!in_mst[v] && e.weight < min[v]) {
@@ -133,7 +133,7 @@ list<edge> algorithms::prim(Graph &g) {
 		mst_edge.src = parent[i];
 		mst_edge.dest = i;
 
-		for (int j = 0; j < g.getEdges().size; j++) {
+		for (int j = 0; j < g.getEdges().getSize(); j++) {
 			edge e = g.getEdges().get(j);
 			if ((e.src == mst_edge.src && e.dest == mst_edge.dest) ||
 				(e.src == mst_edge.dest && e.dest == mst_edge.src)) {
@@ -171,12 +171,12 @@ void algorithms::unionSets(int u, int v, int *parent, int *rank) {
 	}
 }
 list<edge> algorithms::kruskal(Graph &g) {
-	int max_vertices = g.getVertices().size;
+	int max_vertices = g.getVertices().getSize();
 	list<edge> mst_edges;
-	list<edge> sorted = *new list<edge>(g.getEdges().size);
+	list<edge> sorted = *new list<edge>(g.getEdges().getSize());
 
-	for (int i = 0; i < g.getEdges().size - 1; i++) {
-		for (int j = 0; j < g.getEdges().size - i - 1; j++) {
+	for (int i = 0; i < g.getEdges().getSize() - 1; i++) {
+		for (int j = 0; j < g.getEdges().getSize() - i - 1; j++) {
 			edge e1 = g.getEdges().get(j);
 			edge e2 = g.getEdges().get(j + 1);
 			if(e1.weight > e2.weight) {
@@ -192,7 +192,7 @@ list<edge> algorithms::kruskal(Graph &g) {
 		parent[i] = i;
 		rank[i] = 0;
 	}
-	for (int i = 0; i < g.getEdges().size; i++) {
+	for (int i = 0; i < g.getEdges().getSize(); i++) {
 		edge e = sorted.get(i);
 		int set_u = findSet(e.src, parent);
 		int set_v = findSet(e.dest, parent);

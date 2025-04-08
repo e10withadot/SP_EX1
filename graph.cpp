@@ -43,10 +43,10 @@ void Graph::removeEdge(int src, int dest) {
 	this->vertices.set(dest, v);
 }
 void Graph::print_graph() {
-	for (int i = 0; i < this->vertices.size; i++) {
+	for (int i = 0; i < this->vertices.getSize(); i++) {
 		list<int> neighbors = this->vertices.get(i).neighbors;
 		std::cout << "Vertex " << i << " neighbors: ";
-			for (int j = 0; j < neighbors.size; j++) {
+			for (int j = 0; j < neighbors.getSize(); j++) {
 				std::cout << neighbors.get(j) << ", ";
 			}
 			std::cout << "\n";
