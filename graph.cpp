@@ -29,7 +29,7 @@ void Graph::addEdge(int src, int dest, int weight) {
 	this->vertices.set(src, vs);
 	vertex vd;
 	try {
-		vd = this->vertices.get(src);
+		vd = this->vertices.get(dest);
 	}
 	catch(std::invalid_argument&) {
 		vd = vertex();
@@ -57,10 +57,23 @@ void Graph::removeEdge(int src, int dest) {
 }
 void Graph::print_graph() {
 	for (int i = 0; i < this->vertices.getSize(); i++) {
-		list<int> neighbors = this->vertices.get(i).neighbors;
+		list<int> neighbors;
+		try {
+			neighbors = this->vertices.get(i).neighbors;
+		}
+		catch(std::invalid_argument&) {
+			neighbors = list<int>();
+		}
 		std::cout << "Vertex " << i << " neighbors: ";
 			for (int j = 0; j < neighbors.getSize(); j++) {
-				std::cout << neighbors.get(j) << ", ";
+				int n;
+				try {
+					n = neighbors.get(j);
+					std::cout << n << ", ";
+				}
+				catch(std::invalid_argument&){
+					continue;
+				}
 			}
 			std::cout << "\n";
 	}

@@ -10,7 +10,7 @@ namespace data {
 		public:
 			list_item() : empty(true) {};
 			list_item(const list_item<K> &other) : value(other.value), empty(other.empty) {};
-			list_item<K>& operator =(const list_item<K> &other) {
+			list_item<K> &operator =(const list_item<K> &other) {
 				if (this != &other) {
 					value = other.value;
 					empty = other.empty;
@@ -34,6 +34,16 @@ namespace data {
 				for (int i = 0; i < this->size; i++) {
 					arr[i] = other.arr[i];
 				}
+			}
+			list<T> &operator=(const list<T> &other) {
+				if (this != &other) {
+					delete[] arr; 
+					this->size = other.size;
+					this->arr = new list_item<T>[this->size];
+					for (int i = 0; i < this->size; i++)
+						this->arr[i] = other.arr[i];
+				}
+				return *this;
 			}
 			~list() { delete [] arr; }
 			int getSize();

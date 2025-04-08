@@ -2,6 +2,7 @@
 #include "algorithms.hpp"
 #include "data_strct.hpp"
 #include <limits>
+#include <stdexcept>
 using namespace std;
 list<int> algorithms::bfs(list<vertex> &vertices) {
 	int s = 0;
@@ -19,11 +20,15 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 		list<int> neighbors = vertices.get(current).neighbors;
 		res.push(current);
 		for (int i = 0; i < neighbors.getSize(); i++) {
-			int x = neighbors.get(i);
-			if(!colored.get(x)) {
-				colored.set(x, true);
-				queue.push(x);
+			int x;
+			try {
+				x = neighbors.get(i);
+				if(!colored.get(x)) {
+					colored.set(x, true);
+					queue.push(x);
+				}
 			}
+			catch(std::invalid_argument){}
 		}
 	}
 	return res;
@@ -32,8 +37,11 @@ void algorithms::dfsRec(list<vertex> &vertices, list<bool> &colored, int s, list
 	colored.set(s, true);
 	res.push(s);
 	for(int i = 0; i < vertices.getSize(); i++) {
-		if (!colored.get(i))
-			dfsRec(vertices, colored, i, res);
+		try {
+			if (!colored.get(i))
+				dfsRec(vertices, colored, i, res);
+		}
+		catch(std::invalid_argument){}
 	}
 }
 list<int> algorithms::dfs(list<vertex> &vertices) {
@@ -61,33 +69,48 @@ list<int> algorithms::dijkstra(Graph &g, int src) {
 		int index = -1;
 
 		for (int j = 0; j <max_vertices; j++){
-			if (!colored.get(j) && distances.get(j) <= min) {
-				min = distances.get(j);
-				index = j;
+			try {
+				if (!colored.get(j) && distances.get(j) <= min) {
+					min = distances.get(j);
+					index = j;
+				}
 			}
+			catch(std::invalid_argument){}
 		}
 		int u = index;
 		if (u == -1) break;
 
 		colored.set(u, true);
 
-		vertex current = g.getVertices().get(u);
-		for (int i = 0; i < current.neighbors.getSize(); i++) {
-			int neighbor = current.neighbors.get(i);
-			int weight = numeric_limits<int>::max();
-			for (int j = 0; j < g.getEdges().getSize(); j++) {
-				edge e = g.getEdges().get(j);
-				if ((e.src == u && e.dest == neighbor) || (e.src == neighbor && e.dest == u)) {
-					weight = e.weight;
-					break;
-				}
-			}
+		vertex current;
+		try {
+			current = g.getVertices().get(u);
+			for (int i = 0; i < current.neighbors.getSize(); i++) {
+				int neighbor;
+				try {
+					neighbor = current.neighbors.get(i);
+					int weight = numeric_limits<int>::max();
+					for (int j = 0; j < g.getEdges().getSize(); j++) {
+						edge e;
+						try {
+							e = g.getEdges().get(j);
+							if ((e.src == u && e.dest == neighbor) || (e.src == neighbor && e.dest == u)) {
+								weight = e.weight;
+								break;
+							}
+						}
+						catch(std::invalid_argument){}
+					}
 
-			if (!colored.get(neighbor) && distances.get(u) != numeric_limits<int>::max() &&
-				distances.get(u) + weight < distances.get(neighbor)) {
-				distances.set(neighbor, distances.get(u) + weight);
+					if (!colored.get(neighbor) && distances.get(u) != numeric_limits<int>::max() &&
+						distances.get(u) + weight < distances.get(neighbor)) {
+						distances.set(neighbor, distances.get(u) + weight);
+					}
+				}
+				catch(std::invalid_argument){}
 			}
 		}
+		catch(std::invalid_argument){}
 	}
 
 	return distances;
@@ -114,19 +137,31 @@ list<edge> algorithms::prim(Graph &g) {
 			}
 		}
 		in_mst[u] = true;
-		list<int> neighbors = g.getVertices().get(u).neighbors;
-		for (int j = 0; j < neighbors.getSize(); j++) {
-			int v = neighbors.get(j);
-			for(int k = 0; k < g.getEdges().getSize(); k++) {
-				edge e = g.getEdges().get(j);
-				if ((e.src == u && e.dest == v) || (e.src == v && e.dest == u)) {
-					if (!in_mst[v] && e.weight < min[v]) {
-						min[v] = e.weight;
-						parent[v] = u;
+		list<int> neighbors;
+		try {
+			neighbors = g.getVertices().get(u).neighbors;
+			for (int j = 0; j < neighbors.getSize(); j++) {
+				int v;
+				try {
+					v = neighbors.get(j);
+					for(int k = 0; k < g.getEdges().getSize(); k++) {
+						edge e;
+						try {
+							e = g.getEdges().get(j);
+							if ((e.src == u && e.dest == v) || (e.src == v && e.dest == u)) {
+								if (!in_mst[v] && e.weight < min[v]) {
+									min[v] = e.weight;
+									parent[v] = u;
+								}
+							}
+						}
+						catch(std::invalid_argument){}
 					}
 				}
+				catch(std::invalid_argument){}
 			}
 		}
+		catch(std::invalid_argument){}
 	}
 	for (int i = 0; i < max_vertices; i++) {
 		edge mst_edge;
@@ -134,12 +169,16 @@ list<edge> algorithms::prim(Graph &g) {
 		mst_edge.dest = i;
 
 		for (int j = 0; j < g.getEdges().getSize(); j++) {
-			edge e = g.getEdges().get(j);
-			if ((e.src == mst_edge.src && e.dest == mst_edge.dest) ||
-				(e.src == mst_edge.dest && e.dest == mst_edge.src)) {
-				mst_edge.weight = e.weight;
-				break;
+			edge e;
+			try {
+				e = g.getEdges().get(j);
+				if ((e.src == mst_edge.src && e.dest == mst_edge.dest) ||
+					(e.src == mst_edge.dest && e.dest == mst_edge.src)) {
+					mst_edge.weight = e.weight;
+					break;
+				}
 			}
+			catch(std::invalid_argument){}
 		}
 		mst_edges.push(mst_edge);
 	}
@@ -177,12 +216,16 @@ list<edge> algorithms::kruskal(Graph &g) {
 
 	for (int i = 0; i < g.getEdges().getSize() - 1; i++) {
 		for (int j = 0; j < g.getEdges().getSize() - i - 1; j++) {
-			edge e1 = g.getEdges().get(j);
-			edge e2 = g.getEdges().get(j + 1);
-			if(e1.weight > e2.weight) {
-				sorted.set(j, e2);
-				sorted.set(j+1, e1);
+			edge e1, e2;
+			try {
+				e1 = g.getEdges().get(j);
+				e2 = g.getEdges().get(j + 1);
+				if(e1.weight > e2.weight) {
+					sorted.set(j, e2);
+					sorted.set(j+1, e1);
+				}
 			}
+			catch(std::invalid_argument){}
 		}
 	}
 
@@ -193,13 +236,17 @@ list<edge> algorithms::kruskal(Graph &g) {
 		rank[i] = 0;
 	}
 	for (int i = 0; i < g.getEdges().getSize(); i++) {
-		edge e = sorted.get(i);
-		int set_u = findSet(e.src, parent);
-		int set_v = findSet(e.dest, parent);
-		if (set_u != set_v) {
-			mst_edges.push(e);
-			unionSets(set_u, set_v, parent, rank);
+		edge e;
+		try {
+			e = sorted.get(i);
+			int set_u = findSet(e.src, parent);
+			int set_v = findSet(e.dest, parent);
+			if (set_u != set_v) {
+				mst_edges.push(e);
+				unionSets(set_u, set_v, parent, rank);
+			}
 		}
+		catch(std::invalid_argument){}
 	}
 
 	delete [] parent;
