@@ -1,4 +1,5 @@
 // ey.gellis@gmail.com
+#include <stdexcept>
 #include "graph.hpp"
 using namespace graph;
 #include <iostream>
@@ -17,10 +18,22 @@ void Graph::addEdge(int src, int dest, int weight) {
 	e.dest = dest;
 	e.weight = weight;
 	this->edges.push(e);
-	vertex vs = this->vertices.get(src);
+	vertex vs;
+	try {
+		vs = this->vertices.get(src);
+	}
+	catch(std::invalid_argument) {
+		vs = *new vertex();
+	}
 	vs.neighbors.push(dest);
 	this->vertices.set(src, vs);
-	vertex vd = this->vertices.get(dest);
+	vertex vd;
+	try {
+		vd = this->vertices.get(src);
+	}
+	catch(std::invalid_argument) {
+		vd = *new vertex();
+	}
 	vd.neighbors.push(src);
 	this->vertices.set(dest, vd);
 }
