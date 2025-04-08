@@ -52,14 +52,13 @@ void list<T>::set(int index, T value) {
 template<class T>
 void list<T>::push(T value) {
 	int i = 0;
-	while(!(this->arr[i].isEmpty()) && i < this->size)
+	while(i < this->size && !this->arr[i].isEmpty())
 		i++;
 	if(i == this->size) {
 		list_item<T>* new_arr = new list_item<T>[2*this->size];
 		for (int j = 0; j < this->size; j++) {
-			new_arr[j].set(this->arr[j].get());
+			new_arr[j] = this->arr[j];
 		}
-		delete [] arr;
 		this->arr = new_arr;
 		this->size *= 2;
 	}

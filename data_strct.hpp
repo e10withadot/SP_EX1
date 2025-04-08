@@ -9,6 +9,14 @@ namespace data {
 			bool empty;
 		public:
 			list_item() : empty(true) {};
+			list_item(const list_item<K> &other) : value(other.value), empty(other.empty) {};
+			list_item<K>& operator =(const list_item<K> &other) {
+				if (this != &other) {
+					value = other.value;
+					empty = other.empty;
+				}
+				return *this;
+			}
 			K get();
 			void set(K value);
 			bool isEmpty();
@@ -24,7 +32,7 @@ namespace data {
 			list(int init_size) : arr(new list_item<T>[init_size]), size(init_size) {};
 			list(const list<T> &other) : arr(new list_item<T>[other.size]), size(other.size) {
 				for (int i = 0; i < this->size; i++) {
-					arr[i].set(other.arr[i].get());
+					arr[i] = other.arr[i];
 				}
 			}
 			~list() { delete [] arr; }

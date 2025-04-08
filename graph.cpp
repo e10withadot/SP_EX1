@@ -13,7 +13,7 @@ list<edge> Graph::getEdges() {
 }
 
 void Graph::addEdge(int src, int dest, int weight) {
-	edge e = *new edge();
+	edge e;
 	e.src = src;
 	e.dest = dest;
 	e.weight = weight;
@@ -22,8 +22,8 @@ void Graph::addEdge(int src, int dest, int weight) {
 	try {
 		vs = this->vertices.get(src);
 	}
-	catch(std::invalid_argument) {
-		vs = *new vertex();
+	catch(std::invalid_argument&) {
+		vs = vertex();
 	}
 	vs.neighbors.push(dest);
 	this->vertices.set(src, vs);
@@ -31,8 +31,8 @@ void Graph::addEdge(int src, int dest, int weight) {
 	try {
 		vd = this->vertices.get(src);
 	}
-	catch(std::invalid_argument) {
-		vd = *new vertex();
+	catch(std::invalid_argument&) {
+		vd = vertex();
 	}
 	vd.neighbors.push(src);
 	this->vertices.set(dest, vd);
