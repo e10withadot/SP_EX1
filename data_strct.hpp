@@ -48,9 +48,10 @@ namespace data {
 			~list() { delete [] arr; }
 			int getSize();
 			T get(int index);
+			T getLast();
 			void set(int index, T value);
 			void push(T value);
-			T pop();
+			void pop();
 			void remove(int index);
 			bool empty();
 	};

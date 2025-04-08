@@ -1,11 +1,17 @@
 // ey.gellis@gmail.com
 #include <iostream>
+#include <stdexcept>
 #include "algorithms.hpp"
 
 void printPath(list<int>& path) {
     std::cout << "Path: ";
     for (int i = 0; i < path.getSize(); i++) {
-        std::cout << path.get(i) << " ";
+        int v;
+        try {
+            v = path.get(i);
+            std::cout << v << " ";
+        }
+        catch(std::invalid_argument&) {}
     }
     std::cout << "\n";
 }
@@ -13,8 +19,12 @@ void printPath(list<int>& path) {
 void printMST(list<edge>& mst) {
     std::cout << "MST edges:" << "\n";
     for (int i = 0; i < mst.getSize(); i++) {
-        edge e = mst.get(i);
-        std::cout << "(" << e.src << " - " << e.dest << ") weight: " << e.weight << "\n";
+        edge e;
+        try {
+            e = mst.get(i);
+            std::cout << "(" << e.src << " -> " << e.dest << ") weight: " << e.weight << "\n";
+        }
+	catch(std::invalid_argument&){}
     }
 }
 

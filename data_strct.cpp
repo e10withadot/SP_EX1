@@ -41,7 +41,13 @@ T list<T>::get(int index) {
 		throw std::out_of_range("Index is out of range.");
 	return this->arr[index].get();
 }
-
+template<class T>
+T list<T>::getLast() {
+	int i = 0;
+	while(i < this->size && !this->arr[i].isEmpty())
+		i++;
+	return this->arr[i-1].get();
+}
 template<class T>
 void list<T>::set(int index, T value) {
 	if(index > this->size || index < 0)
@@ -66,24 +72,21 @@ void list<T>::push(T value) {
 }
 
 template<class T>
-T list<T>::pop() {
+void list<T>::pop() {
 	if (this->empty()) throw std::out_of_range("No elements to pop.");
 
 	int i = 0;
-	while(!(this->arr[i].isEmpty()) && i < this->size-1)
+	while(!this->arr[i].isEmpty() && i < this->size-1)
 		i++;
-	T res = this->arr[i].get();
-	this->arr[i].erase();
+	this->arr[i-1].erase();
 	if(this->size > 1 && i + 1 <= this->size/2) {
 		list_item<T>* new_arr = new list_item<T>[this->size/2];
 		for (int j = 0; j < this->size/2; j++) {
-			new_arr[j].set(this->arr[j].get());
+			new_arr[j] = this->arr[j];
 		}
-		delete [] arr;
 		this->arr = new_arr;
 		this->size /= 2;
 	}
-	return res;
 }
 
 template<class T>

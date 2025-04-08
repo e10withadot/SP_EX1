@@ -16,7 +16,8 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 	queue.set(0, s);
 	
 	while(!queue.empty()) {
-		int current = queue.pop();
+		int current = queue.getLast();
+		queue.pop();
 		list<int> neighbors = vertices.get(current).neighbors;
 		res.push(current);
 		for (int i = 0; i < neighbors.getSize(); i++) {
@@ -28,7 +29,7 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 					queue.push(x);
 				}
 			}
-			catch(std::invalid_argument){}
+			catch(std::invalid_argument&){}
 		}
 	}
 	return res;
@@ -41,7 +42,7 @@ void algorithms::dfsRec(list<vertex> &vertices, list<bool> &colored, int s, list
 			if (!colored.get(i))
 				dfsRec(vertices, colored, i, res);
 		}
-		catch(std::invalid_argument){}
+		catch(std::invalid_argument&){}
 	}
 }
 list<int> algorithms::dfs(list<vertex> &vertices) {
@@ -75,7 +76,7 @@ list<int> algorithms::dijkstra(Graph &g, int src) {
 					index = j;
 				}
 			}
-			catch(std::invalid_argument){}
+			catch(std::invalid_argument&){}
 		}
 		int u = index;
 		if (u == -1) break;
@@ -99,7 +100,7 @@ list<int> algorithms::dijkstra(Graph &g, int src) {
 								break;
 							}
 						}
-						catch(std::invalid_argument){}
+						catch(std::invalid_argument&){}
 					}
 
 					if (!colored.get(neighbor) && distances.get(u) != numeric_limits<int>::max() &&
@@ -107,10 +108,10 @@ list<int> algorithms::dijkstra(Graph &g, int src) {
 						distances.set(neighbor, distances.get(u) + weight);
 					}
 				}
-				catch(std::invalid_argument){}
+				catch(std::invalid_argument&){}
 			}
 		}
-		catch(std::invalid_argument){}
+		catch(std::invalid_argument&){}
 	}
 
 	return distances;
@@ -137,6 +138,7 @@ list<edge> algorithms::prim(Graph &g) {
 			}
 		}
 		in_mst[u] = true;
+		if (u == -1) break;
 		list<int> neighbors;
 		try {
 			neighbors = g.getVertices().get(u).neighbors;
@@ -155,13 +157,13 @@ list<edge> algorithms::prim(Graph &g) {
 								}
 							}
 						}
-						catch(std::invalid_argument){}
+						catch(std::invalid_argument&){}
 					}
 				}
-				catch(std::invalid_argument){}
+				catch(std::invalid_argument&){}
 			}
 		}
-		catch(std::invalid_argument){}
+		catch(std::invalid_argument&){}
 	}
 	for (int i = 0; i < max_vertices; i++) {
 		edge mst_edge;
@@ -178,11 +180,10 @@ list<edge> algorithms::prim(Graph &g) {
 					break;
 				}
 			}
-			catch(std::invalid_argument){}
+			catch(std::invalid_argument&){}
 		}
 		mst_edges.push(mst_edge);
 	}
-	delete [] in_mst;
 	delete [] min;
 	delete [] parent;
 
@@ -225,7 +226,7 @@ list<edge> algorithms::kruskal(Graph &g) {
 					sorted.set(j+1, e1);
 				}
 			}
-			catch(std::invalid_argument){}
+			catch(std::invalid_argument&){}
 		}
 	}
 
@@ -246,7 +247,7 @@ list<edge> algorithms::kruskal(Graph &g) {
 				unionSets(set_u, set_v, parent, rank);
 			}
 		}
-		catch(std::invalid_argument){}
+		catch(std::invalid_argument&){}
 	}
 
 	delete [] parent;
