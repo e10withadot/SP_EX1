@@ -36,6 +36,10 @@ int list<T>::getSize() {
 	return this->size;
 }
 template<class T>
+int list<T>::getCount() {
+	return this->count;
+}
+template<class T>
 T list<T>::get(int index) {
 	if(index > this->size || index < 0)
 		throw std::out_of_range("Index is out of range.");

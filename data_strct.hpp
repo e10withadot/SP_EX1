@@ -27,10 +27,11 @@ namespace data {
 		private:
 			list_item<T>* arr;
 			int size;
+			int count;
 		public:
-			list() : arr(new list_item<T>[1]), size(1) {};
-			list(int init_size) : arr(new list_item<T>[init_size]), size(init_size) {};
-			list(const list<T> &other) : arr(new list_item<T>[other.size]), size(other.size) {
+			list() : arr(new list_item<T>[1]), size(1), count(0) {};
+			list(int init_size) : arr(new list_item<T>[init_size]), size(init_size), count(0) {};
+			list(const list<T> &other) : arr(new list_item<T>[other.size]), size(other.size), count(other.count) {
 				for (int i = 0; i < this->size; i++) {
 					arr[i] = other.arr[i];
 				}
@@ -39,6 +40,7 @@ namespace data {
 				if (this != &other) {
 					delete[] arr; 
 					this->size = other.size;
+					this->count = other.count;
 					this->arr = new list_item<T>[this->size];
 					for (int i = 0; i < this->size; i++)
 						this->arr[i] = other.arr[i];
@@ -47,6 +49,7 @@ namespace data {
 			}
 			~list() { delete [] arr; }
 			int getSize();
+			int getCount();
 			T get(int index);
 			T getLast();
 			void set(int index, T value);
