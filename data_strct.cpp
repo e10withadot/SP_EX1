@@ -1,5 +1,4 @@
 // ey.gellis@gmail.com
-#include <iostream>
 #include <stdexcept>
 #include "data_strct.hpp"
 using namespace data;
@@ -76,7 +75,6 @@ void list<T>::push(T value) {
 	}
 	this->arr[i].set(value);
 	this->count++;
-	std::cout << "count: " << this->getCount() << "\n";
 }
 
 template<class T>

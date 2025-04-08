@@ -1,7 +1,6 @@
 // ey.gellis@gmail.com
 #include "algorithms.hpp"
 #include "data_strct.hpp"
-#include <iostream>
 #include <limits>
 #include <stdexcept>
 using namespace std;
@@ -21,7 +20,6 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 		queue.pop();
 		list<int> neighbors = vertices.get(current).neighbors;
 		res.push(current);
-		std::cout << "count: " << res.getCount() << "\n";
 		for (int i = 0; i < neighbors.getSize(); i++) {
 			int x;
 			try {
@@ -139,52 +137,50 @@ list<edge> algorithms::prim(Graph &g) {
 				u = j;
 			}
 		}
-		in_mst[u] = true;
 		if (u == -1) break;
+		in_mst[u] = true;
 		list<int> neighbors;
 		try {
 			neighbors = g.getVertices().get(u).neighbors;
 			for (int j = 0; j < neighbors.getSize(); j++) {
-				int v;
-				try {
-					v = neighbors.get(j);
-					for(int k = 0; k < g.getEdges().getSize(); k++) {
-						edge e;
-						try {
-							e = g.getEdges().get(j);
-							if ((e.src == u && e.dest == v) || (e.src == v && e.dest == u)) {
-								if (!in_mst[v] && e.weight < min[v]) {
-									min[v] = e.weight;
-									parent[v] = u;
-								}
-							}
-						}
-						catch(std::invalid_argument&){}
+				int v = neighbors.get(j);
+				edge e;
+				bool found_edge = false;
+				for(int k = 0; k < g.getEdges().getSize(); k++) {
+					e = g.getEdges().get(k);
+					if ((e.src == u && e.dest == v) || (e.src == v && e.dest == u)) {
+						found_edge = true;
+						break;
 					}
 				}
-				catch(std::invalid_argument&){}
+				if (found_edge && !in_mst[v] && e.weight < min[v]) {
+					min[v] = e.weight;
+					parent[v] = u;
+				}
 			}
 		}
 		catch(std::invalid_argument&){}
 	}
-	for (int i = 0; i < max_vertices; i++) {
-		edge mst_edge;
-		mst_edge.src = parent[i];
-		mst_edge.dest = i;
+	for (int i = 1; i < max_vertices; i++) {
+		if (parent[i] != -1) {
+			edge mst_edge;
+			mst_edge.src = parent[i];
+			mst_edge.dest = i;
 
-		for (int j = 0; j < g.getEdges().getSize(); j++) {
-			edge e;
-			try {
-				e = g.getEdges().get(j);
-				if ((e.src == mst_edge.src && e.dest == mst_edge.dest) ||
-					(e.src == mst_edge.dest && e.dest == mst_edge.src)) {
-					mst_edge.weight = e.weight;
-					break;
+			for (int j = 0; j < g.getEdges().getSize(); j++) {
+				edge e;
+				try {
+					e = g.getEdges().get(j);
+					if ((e.src == mst_edge.src && e.dest == mst_edge.dest) ||
+						(e.src == mst_edge.dest && e.dest == mst_edge.src)) {
+						mst_edge.weight = e.weight;
+						break;
+					}
 				}
+				catch(std::invalid_argument&){}
 			}
-			catch(std::invalid_argument&){}
+			mst_edges.push(mst_edge);
 		}
-		mst_edges.push(mst_edge);
 	}
 	delete [] min;
 	delete [] parent;
@@ -215,7 +211,14 @@ void algorithms::unionSets(int u, int v, int *parent, int *rank) {
 list<edge> algorithms::kruskal(Graph &g) {
 	int max_vertices = g.getVertices().getSize();
 	list<edge> mst_edges;
-	list<edge> sorted = *new list<edge>(g.getEdges().getSize());
+
+	list<edge> sorted(g.getEdges().getSize());
+	for (int i  = 0; i < g.getEdges().getSize(); i++) {
+		try {
+			sorted.set(i, g.getEdges().get(i));
+		}
+		catch (std::invalid_argument&) {}
+	}
 
 	for (int i = 0; i < g.getEdges().getSize() - 1; i++) {
 		for (int j = 0; j < g.getEdges().getSize() - i - 1; j++) {
@@ -250,6 +253,7 @@ list<edge> algorithms::kruskal(Graph &g) {
 			}
 		}
 		catch(std::invalid_argument&){}
+		if (mst_edges.getCount() == max_vertices - 1) break;
 	}
 
 	delete [] parent;
