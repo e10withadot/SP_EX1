@@ -2,6 +2,13 @@
 #include <stdexcept>
 #include "data_strct.hpp"
 using namespace data;
+#include "graph.hpp"
+
+template class data::list<int>;
+template class data::list<graph::edge>;
+template class data::list<graph::vertex>;
+template class data::list<bool>;
+
 template<class T>
 T list<T>::get(int index) {
 	if(index > this->size || index < 0)

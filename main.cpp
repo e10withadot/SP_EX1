@@ -1,10 +1,6 @@
 // ey.gellis@gmail.com
 #include <iostream>
 #include "algorithms.hpp"
-#include "data_strct.hpp"
-using namespace data;
-#include "graph.hpp"
-using namespace graph;
 
 void printPath(list<int>& path) {
     std::cout << "Path: ";

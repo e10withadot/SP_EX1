@@ -20,4 +20,5 @@ namespace data {
 			bool empty();
 	};
 }
+
 #endif
