@@ -16,7 +16,7 @@ TEST_CASE("Testing BFS algorithm") {
     list<vertex> vertices = g.getVertices();
     list<int> bfs_result = algorithms::bfs(vertices);
 
-    CHECK(bfs_result.getSize() == 6);
+    CHECK(bfs_result.getCount() == 6);
     CHECK(bfs_result.get(0) == 0);
 }
 
@@ -32,7 +32,7 @@ TEST_CASE("Testing DFS algorithm") {
     list<vertex> vertices = g.getVertices();
     list<int> dfs_result = algorithms::dfs(vertices);
 
-    CHECK(dfs_result.getSize() == 6);
+    CHECK(dfs_result.getCount() == 6);
     CHECK(dfs_result.get(0) == 0);
 }
 
@@ -60,9 +60,9 @@ TEST_CASE("Testing Prim's MST algorithm") {
     g.addEdge(2, 3, 5);
 
     list<edge> mst = algorithms::prim(g);
-    CHECK(mst.getSize() == 3);
+    CHECK(mst.getCount() == 3);
     int total_weight = 0;
-    for(int i = 0; i < mst.getSize(); i++) {
+    for(int i = 0; i < mst.getCount(); i++) {
         total_weight += mst.get(i).weight;
     }
     CHECK(total_weight == 6);
@@ -77,9 +77,9 @@ TEST_CASE("Testing Kruskal's MST algorithm") {
     g.addEdge(2, 3, 5);
 
     list<edge> mst = algorithms::kruskal(g);
-    CHECK(mst.getSize() == 3);
+    CHECK(mst.getCount() == 3);
     int total_weight = 0;
-    for(int i = 0; i < mst.getSize(); i++) {
+    for(int i = 0; i < mst.getCount(); i++) {
         total_weight += mst.get(i).weight;
     }
     CHECK(total_weight == 6);

@@ -1,4 +1,5 @@
 // ey.gellis@gmail.com
+#include <iostream>
 #include <stdexcept>
 #include "data_strct.hpp"
 using namespace data;
@@ -56,6 +57,7 @@ template<class T>
 void list<T>::set(int index, T value) {
 	if(index > this->size || index < 0)
 		throw std::out_of_range("Index is out of range.");
+	if(this->arr[index].isEmpty()) this->count++;
 	this->arr[index].set(value);
 }
 
@@ -73,6 +75,8 @@ void list<T>::push(T value) {
 		this->size *= 2;
 	}
 	this->arr[i].set(value);
+	this->count++;
+	std::cout << "count: " << this->getCount() << "\n";
 }
 
 template<class T>
@@ -91,6 +95,7 @@ void list<T>::pop() {
 		this->arr = new_arr;
 		this->size /= 2;
 	}
+	this->count--;
 }
 
 template<class T>
@@ -100,12 +105,10 @@ void list<T>::remove(int index) {
 	for (int i = index; i < this->size-1; i++) {
 		arr[i].set(arr[i+1].get());
 	}
+	this->count--;
 }
 
 template<class T>
 bool list<T>::empty() {
-	for (int i = 0; i < this->size; i++) {
-		if (!this->arr[i].isEmpty()) return false;
-	}
-	return true;
+	return count == 0;
 }

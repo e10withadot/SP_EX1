@@ -1,6 +1,7 @@
 // ey.gellis@gmail.com
 #include "algorithms.hpp"
 #include "data_strct.hpp"
+#include <iostream>
 #include <limits>
 #include <stdexcept>
 using namespace std;
@@ -20,6 +21,7 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 		queue.pop();
 		list<int> neighbors = vertices.get(current).neighbors;
 		res.push(current);
+		std::cout << "count: " << res.getCount() << "\n";
 		for (int i = 0; i < neighbors.getSize(); i++) {
 			int x;
 			try {
