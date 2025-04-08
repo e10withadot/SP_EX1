@@ -13,7 +13,7 @@ list<int> algorithms::bfs(list<vertex> &vertices) {
 		colored.set(i, false);
 	}
 	colored.set(s, true);
-	queue.set(0, s);
+	queue.push(s);
 	
 	while(!queue.empty()) {
 		int current = queue.getLast();

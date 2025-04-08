@@ -29,7 +29,7 @@ namespace data {
 			int size;
 			int count;
 		public:
-			list() : arr(new list_item<T>[1]), size(1), count(0) {};
+			list() : arr(new list_item<T>[0]), size(0), count(0) {};
 			list(int init_size) : arr(new list_item<T>[init_size]), size(init_size), count(0) {};
 			list(const list<T> &other) : arr(new list_item<T>[other.size]), size(other.size), count(other.count) {
 				for (int i = 0; i < this->size; i++) {

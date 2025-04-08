@@ -65,13 +65,16 @@ void list<T>::push(T value) {
 	int i = 0;
 	while(i < this->size && !this->arr[i].isEmpty())
 		i++;
-	if(i == this->size) {
-		list_item<T>* new_arr = new list_item<T>[2*this->size];
+	if(i >= this->size) {
+		int new_size;
+		if(this->size == 0) new_size = 1;
+		else new_size = 2*this->size;
+		list_item<T>* new_arr = new list_item<T>[new_size];
 		for (int j = 0; j < this->size; j++) {
 			new_arr[j] = this->arr[j];
 		}
 		this->arr = new_arr;
-		this->size *= 2;
+		this->size = new_size;
 	}
 	this->arr[i].set(value);
 	this->count++;
