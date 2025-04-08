@@ -4,7 +4,7 @@
 
 void printPath(list<int>& path) {
     std::cout << "Path: ";
-    for (int i = 0; i < path.size; i++) {
+    for (int i = 0; i < path.getSize(); i++) {
         std::cout << path.get(i) << " ";
     }
     std::cout << "\n";
@@ -12,7 +12,7 @@ void printPath(list<int>& path) {
 
 void printMST(list<edge>& mst) {
     std::cout << "MST edges:" << "\n";
-    for (int i = 0; i < mst.size; i++) {
+    for (int i = 0; i < mst.getSize(); i++) {
         edge e = mst.get(i);
         std::cout << "(" << e.src << " - " << e.dest << ") weight: " << e.weight << "\n";
     }
@@ -46,7 +46,7 @@ int main() {
 
     std::cout << "Dijkstra's shortest paths from vertex 0:" << "\n";
     list<int> distances = algorithms::dijkstra(g, 0);
-    for (int i = 0; i < distances.size; i++) {
+    for (int i = 0; i < distances.getSize(); i++) {
         std::cout << "Distance to vertex " << i << ": " << distances.get(i) << "\n";
     }
     std::cout << "\n";
