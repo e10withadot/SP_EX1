@@ -22,6 +22,11 @@ namespace data {
 		public:
 			list() : arr(new list_item<T>[1]), size(1) {};
 			list(int init_size) : arr(new list_item<T>[init_size]), size(init_size) {};
+			list(const list<T> &other) : arr(new list_item<T>[other.size]), size(other.size) {
+				for (int i = 0; i < this->size; i++) {
+					arr[i].set(other.arr[i].get());
+				}
+			}
 			~list() { delete [] arr; }
 			int getSize();
 			T get(int index);
